@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "better-icons": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "better-icons"
+      ],
+      "disabled": false
+    }
+  }
+}

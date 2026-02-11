@@ -1,0 +1,29 @@
+# macOS artifacts
+._*
+.DS_Store
+
+# Machine-specific identity and state
+installation_id
+browserOnboardingStatus.txt
+user_settings.pb
+
+# Binary session state (protobuf blobs)
+context_state/
+annotations/
+
+# Conversation history (ephemeral, large)
+conversations/
+brain/
+
+# Browser recordings (screenshot dumps, 100MB+)
+browser_recordings/
+
+# Local code change tracking
+code_tracker/
+
+# Playground prototypes (generated throwaway)
+playground/
+
+# Empty placeholders
+implicit/
+knowledge/
