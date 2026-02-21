@@ -29,3 +29,5 @@ implicit/
 knowledge/
 
 mcp_config.json
+workflows/generate-context.md
+
