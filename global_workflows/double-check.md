@@ -2,111 +2,90 @@
 description: Double checks everything again.
 ---
 
-## Phase 1: Static Connectivity Trace (The Thread Pull)
-*Goal: Trace the execution path from entry point to leaf nodes to ensure every component is reachable, instantiated correctly, and wired up.*
+# AI Agent Verification Protocol: Correctness, Quality & Consistency
+
+## Phase 1: Structural Integrity & Dependency Trace (The Thread Pull)
+*Goal: Trace the execution path from the entry point to the deepest logic nodes to ensure every component is reachable, correctly instantiated, and wired.*
 
 ### 1.1 Entry Point Verification
-- [ ] **Open `src/main.py`** (or defined entry script).
-- [ ] **Verify Imports:** Ensure all imports resolve to existing files.
-- [ ] **App Initialization:** Confirm `QApplication` is instantiated once.
-- [ ] **Root Window:** Confirm `MainWindow` is instantiated and `.show()` is called.
-- [ ] **Bootstrap Logic:** Verify that global styles (Theme), configuration loaders (`SettingsManager`), and logging are initialized *before* the UI loads.
+- [ ] **Identify Entry Point:** Open the main entry script (e.g., `main.py`, `index.ts`, `app.go`).
+- [ ] **Import Resolution:** Verify that all imports/dependencies resolve to existing files or valid packages.
+- [ ] **Initialization Sequence:** Confirm that global configurations (environment variables, settings, logging, themes) are initialized *before* any core logic or UI loads.
+- [ ] **Bootstrap Logic:** Ensure the primary application class or function is instantiated once and executed correctly.
 
-### 1.2 UI Hierarchy & Routing Trace
-*Trace the parent-child chain.*
-- [ ] **MainWindow Composition:**
-    - Check central widget initialization.
-    - Verify `QStackedWidget` (or main layout) exists for view routing.
-- [ ] **Navigation Wiring:**
-    - **Source:** Go to `SessionSidebar` (or navigation control).
-    - **Signal:** Find the signal emitted on selection (e.g., `sessionChanged`, `viewChanged`).
-    - **Connection:** Trace where this signal connects in `MainWindow`.
-    - **Target:** Ensure the slot correctly changes the `QStackedWidget` index or instantiates the new View.
-- [ ] **View Instantiation:**
-    - For every View (e.g., `LipSyncView`, `AudioToVideoView`, `SceneRowWidget`):
-        - Check `__init__` arguments. Are dependencies (like `FalApiService` or `JobQueueManager`) passed correctly?
-        - **Orphan Check:** Are there Views defined in `src/ui/views/` that are never imported or added to the stack?
+### 1.2 System Hierarchy & Routing Trace
+- [ ] **Component Composition:** Check the initialization of the central layout or main routing mechanism.
+- [ ] **Navigation/Routing Wiring:**
+    - **Source:** Identify the trigger for a state change or navigation (e.g., a button click, API route, or menu selection).
+    - **Signal/Event:** Find the event emitted or the function called.
+    - **Connection:** Trace where this signal/event is handled.
+    - **Target:** Ensure the handler correctly updates the state, changes the view, or returns the expected resource.
+- [ ] **Dependency Injection:**
+    - For every major component or view: Verify that its constructor arguments (services, managers, database handles) are passed correctly.
+    - **Orphan Check:** Identify files or components defined in the project structure that are never imported or utilized.
 
-### 1.3 Signal/Slot Integrity (PySide6 Specific)
-*Prevent silent failures and memory leaks.*
-- [ ] **Lambda Search:** Search codebase for `.connect(lambda`.
-    - **Risk:** Lambdas connected to signals can be garbage collected if not stored, or cause memory leaks if they capture `self` without proper lifecycle management.
-    - **Action:** Ensure complex lambdas use a wrapper (e.g., `CallableSlotAdapter`) or that the connection ownership is clear.
-- [ ] **Bound Method Check:** Ensure connections to methods like `self.on_click` are not overwriting previous connections unexpectedly.
-- [ ] **Signature Match:** Verify that emitted Signal arguments match the connected Slot arguments. (e.g., Signal emits `str`, Slot expects `int` -> **Fix**).
+### 1.3 Event & Callback Integrity
+- [ ] **Callback Lifecycle:** Search for anonymous functions (lambdas, arrow functions) used as callbacks.
+    - **Risk:** Ensure they don't capture scope in a way that causes memory leaks or unexpected behavior during garbage collection.
+- [ ] **Signature Matching:** Verify that the arguments emitted by a signal or event match the arguments expected by the connected receiver/handler.
+- [ ] **Redundant Connections:** Ensure handlers are not being attached multiple times, which could lead to duplicate executions of a single event.
 
 ---
 
 ## Phase 2: Logic & Service Integration
-*Goal: Weed out unused methods and ensure services are actually used.*
+*Goal: Eliminate dead code and ensure services are unified and properly utilized.*
 
-### 2.1 Service Injection
-- [ ] **Singleton/Instance Check:**
-    - Trace `FalApiService`, `JobQueueManager`, `StateManager`.
-    - Are they instantiated in `main.py` or `MainWindow`?
-    - Are references passed down to children? (e.g., Does `LipSyncView` get the *same* `JobQueueManager` instance as the `QueueSidebar`?)
-- [ ] **Method Usage Audit:**
-    - For each public method in a Service:
-        - **Right Click -> Find Usages**.
-        - **Zero Usages?** If it is not a required interface override, **Mark for Deletion**.
-        - **Duplicate Declarations?** Check if two services perform nearly identical logic (e.g., two different audio trimming functions). Consolidate into `FFmpegService`.
+### 2.1 Service Audit
+- [ ] **Singleton/Instance Consistency:** Trace core services (API clients, State Managers, Auth providers). Are they shared correctly across the application, or are they being redundantally re-instantiated?
+- [ ] **Method Usage Check:** For every public method in a service/manager:
+    - **Usage Count:** If a method has zero usages and isn't part of a required interface, **delete it**.
+    - **Logic Duplication:** Check for near-identical functions in different files (e.g., two different string formatters). Consolidate into a single utility service.
 
-### 2.2 Data Model Consistency
-- [ ] **JSON Serialization:**
-    - Check `SessionModel.to_dict()` and `from_dict()`.
-    - **Round Trip Test:** Ensure every field saved in `to_dict` is actually restored in `from_dict`.
-    - **Drift Check:** Are there fields in the Model class (e.g., `last_prompt`) that are missing from the serialization logic?
+### 2.2 Data Model & Serialization
+- [ ] **Round-Trip Integrity:** If using serialization (JSON, Protobuf, etc.), verify that a model's `to_data()` and `from_data()` methods are perfectly symmetrical.
+- [ ] **Schema Drift:** Check if new fields added to a class/model were also added to the persistence logic, UI displays, and validation schemas.
 
 ---
 
-## Phase 3: Test Coverage Audit
-*Goal: Ensure critical paths have safety nets. (Skip if `tests/` folder is empty, but flag as Technical Debt).*
+## Phase 3: Safety & Test Audit
+*Goal: Ensure critical paths have safety nets and bug-fixes are permanent.*
 
-### 3.1 Critical Path Mapping
-- [ ] **Identify Critical Methods:**
-    - `FalApiService.submit()` (Cost/External Dependency)
-    - `JobQueueManager.add_job()` (Core Loop)
-    - `StateManager.save_session()` (Data Loss Prevention)
-- [ ] **Verify Test Existence:**
-    - Go to `tests/`. Look for corresponding test files.
-    - **Coverage Check:** Do these tests assert the *result* or just run the method? Ensure assertions exist (e.g., `assert file_exists`, `assert queue.length == 1`).
+### 3.1 Critical Path Coverage
+- [ ] **Identify Critical Methods:** Locate functions involving external dependencies (APIs, DB writes), cost (Cloud usage), or data loss prevention.
+- [ ] **Assertion Check:** Verify that existing tests for these paths actually perform assertions (e.g., `expect(result).toBe(x)`) rather than just running the code without checking the output.
 
-### 3.2 TDD & Bug Reproduction
-- [ ] **Regressions:** If this verification is run due to a bug report, is there a new test case that reproduces that bug?
+### 3.2 Regression Verification
+- [ ] **Bug Reproduction:** If this task was a bug fix, verify there is a test case that would fail if the fix were reverted.
 
 ---
 
-## Phase 4: Documentation Synchronicity
-*Goal: Ensure the map matches the territory.*
+## Phase 4: Documentation & Environment Sync
+*Goal: Ensure the project documentation reflects the current state of the code.*
 
 ### 4.1 Root Level Docs
-- [ ] **README.md:**
-    - **Features List:** Does the README claim features that were removed or not yet implemented?
-    - **Installation:** Run the "Quick Start" commands in a fresh terminal/environment. Do they work exactly as written?
-- [ ] **Architecture.md:**
-    - **Component Diagram:** Does the listed file structure match the actual `src/` tree?
-    - **Tech Stack:** Are versions (e.g., Python 3.12, PySide6) accurate?
+- [ ] **README Accuracy:** Do the "Features" and "Quick Start" sections match the current codebase?
+- [ ] **Environment Setup:** Verify that new dependencies or environment variables are added to `.env.example` or the installation instructions.
+- [ ] **Architecture Sync:** Ensure any high-level diagrams or descriptions of the file structure match the actual `src/` tree.
 
 ### 4.2 Code-Doc Parity
-- [ ] **Docstrings:** Check complex methods (especially in `src/services`). Do the docstrings match the arguments? (e.g., if an arg was renamed from `url` to `path`, was the docstring updated?)
+- [ ] **Docstrings & Types:** Verify that docstrings and type hints match the actual function signatures. (e.g., If a return type changed from `String` to `Object`, update the docs).
 
 ---
 
-## Phase 5: Cleanup & Final Polish
-*Goal: Leave the campsite cleaner than you found it.*
+## Phase 5: Final Polish & Cleanup
+*Goal: Leave the codebase cleaner than it was found.*
 
 ### 5.1 Dead Code Removal
-- [ ] **Imports:** Run an optimize imports command (or linter like `ruff`/`pylint`) to remove unused imports.
-- [ ] **Commented Out Code:** Search for blocks of commented-out code. If they are obsolete, delete them. Use Git history if retrieval is needed later.
-- [ ] **TODOs:** Scan for `# TODO`. Are they still relevant? If minor, fix now. If major, ensure they are tracked in the project management tool.
+- [ ] **Imports:** Run a linter or "optimize imports" command to remove unused imports.
+- [ ] **Comments:** Delete obsolete blocks of commented-out code. (Rely on Git for history).
+- [ ] **TODOs:** Scan for `# TODO`. Address minor ones immediately; ensure major ones are tracked.
 
-### 5.2 Naming Conventions
-- [ ] **Consistency:** Ensure file names match conventions (e.g., `snake_case.py`).
-- [ ] **Class Names:** Ensure `PascalCase` for classes.
-- [ ] **Variables:** Ensure `snake_case` for variables and functions.
+### 5.2 Naming & Style Consistency
+- [ ] **Naming Conventions:** Ensure strict adherence to language-specific standards (e.g., `snake_case` for Python, `camelCase` for JS).
+- [ ] **File Names:** Ensure file names match the class they contain or the project's casing convention.
 
 ## Sign-off
-*   [ ] All critical paths traced.
-*   [ ] Unused code removed.
-*   [ ] Tests pass (if applicable).
-*   [ ] Documentation updated.
+- [ ] Execution paths traced.
+- [ ] Redundant/Unused logic removed.
+- [ ] Documentation reflects current state.
+- [ ] Styling and naming are consistent.
