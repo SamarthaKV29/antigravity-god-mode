@@ -31,3 +31,5 @@ knowledge/
 mcp_config.json
 workflows/generate-context.md
 
+skills/ui-ux-pro-max/scripts/__pycache__/
+daemon/
