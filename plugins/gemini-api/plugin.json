@@ -1,0 +1,17 @@
+{
+  "name": "gemini-api",
+  "version": "2.1.0",
+  "description": "Build applications with the Gemini Interactions API and Live API, including text generation, multi-turn chat, streaming, function calling, managed agents, and real-time audio/video.",
+  "author": {
+    "name": "Google"
+  },
+  "license": "Apache-2.0",
+  "keywords": [
+    "gemini",
+    "interactions-api",
+    "live-api",
+    "agents",
+    "multimodal",
+    "streaming"
+  ]
+}

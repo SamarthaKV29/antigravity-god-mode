@@ -1,0 +1,7 @@
+{
+  "name": "modern-web-guidance-plugin",
+  "displayName": "Modern Web Guidance",
+  "version": "1.0.6",
+  "description": "Keep your coding agent up to date with the latest web best practices.",
+  "logo": "assets/logo.svg"
+}

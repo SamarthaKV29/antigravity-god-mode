@@ -1,35 +1,64 @@
-# macOS artifacts
-._*
-.DS_Store
+# ==============================================================================
+# Antigravity God Mode - .gitignore
+# PUBLIC REPOSITORY SAFETY - STRICTLY NO SECRETS OR SENSITIVE MACHINE STATE
+# ==============================================================================
 
-# Machine-specific identity and state
+# Credentials & Sensitive Configurations
+mcp_config.json
+config.json
+*.env
+*.env.*
+*.key
+*.pem
+*.pfx
+*.pbtxt
+*.pb
+*.db
+*.sqlite
+*oauth*
+*token*
+
+# Local Workspace & Projects State
+projects/
+sidecars/
+daemon/
 installation_id
 browserOnboardingStatus.txt
 user_settings.pb
 
-# Binary session state (protobuf blobs)
-context_state/
-annotations/
-
-# Conversation history (ephemeral, large)
+# Session Data & Runtime Stores
 conversations/
 brain/
-
-# Browser recordings (screenshot dumps, 100MB+)
-browser_recordings/
-
-# Local code change tracking
 code_tracker/
-
-# Playground prototypes (generated throwaway)
+context_state/
+annotations/
+browser_recordings/
 playground/
-
-# Empty placeholders
 implicit/
 knowledge/
+crashes/
+LayoutCache/
 
-mcp_config.json
-workflows/generate-context.md
+# Backup Files
+*.bak
+*.bak/
+*.tar.gz
+*.zip
 
-skills/ui-ux-pro-max/scripts/__pycache__/
-daemon/
+# Operating System Metadata
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Python & Build Artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+node_modules/
+.venv/
+env/
+venv/

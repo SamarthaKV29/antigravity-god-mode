@@ -1,0 +1,20 @@
+load("//learning/gemini/agents/skill_rules:skills.bzl", "agent_skill")
+load("//learning/gemini/agents/skills/skill_creator/scripts:skill_defs.bzl", "validate_skill_test")
+
+package(
+    default_applicable_licenses = ["//third_party/firebase/agent_skills:license"],
+    default_visibility = ["//third_party/firebase/agent_skills:skills_visibility"],
+)
+
+agent_skill(
+    name = "firebase_data_connect_basics",
+    srcs = [
+        "SKILL.md",
+        "examples.md",
+        "templates.md",
+    ] + glob(["reference/**"]),
+)
+
+validate_skill_test(
+    name = "validate_firebase_data_connect_basics_skill_test",
+)
