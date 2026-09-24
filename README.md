@@ -1,115 +1,168 @@
 # antigravity-god-mode
 
-**Drop-in skill pack that turns any AI coding agent into a full engineering team.**
+**Centralized configuration hub, tiered skill catalog, and persona engine for Google Antigravity (AG 2.0) and Antigravity IDE.**
 
 ---
 
-## 🚀 What is this?
+## 🚀 Overview
 
-A single folder you place inside your AI agent's config directory. Once loaded, your agent gains access to **~660 specialized skills**, **20 expert personas**, and **16 workflow commands** — covering everything from React patterns to penetration testing to Zoom automation.
+**antigravity-god-mode** provides a production-grade configuration architecture for Google Antigravity agents. It eliminates context-window bloat while delivering **120+ specialized domain skills**, **20 expert agent personas**, **23 workflows**, and strict defensive coding standards.
 
-No config files to write. No plugins to install. Just copy the folders and go.
-
-```
-git clone https://github.com/SamarthaKV29/antigravity-god-mode.git
-cp -r antigravity-god-mode/* ~/.gemini/antigravity/.
-```
-
-## 🧠 Why?
-
-AI coding agents are powerful out of the box, but they're generalists. They know a little about everything and a lot about nothing specific. That means you spend half your time re-explaining conventions, pasting documentation, and correcting hallucinated API calls.
-
-**antigravity-god-mode** fixes this by giving your agent deep, structured knowledge across 25+ domains — the same way a senior engineer builds expertise over years, except it loads in seconds.
-
-## 📦 What's inside
+It is architected specifically for dual-environment workflows where **Antigravity 2.0 (Agent Manager / CLI)** and **Antigravity IDE** run side-by-side and share conversation history, project brains, and custom configurations through a unified symlink mesh.
 
 ```
-agents/     → 20 specialist personas (security auditor, database architect, etc.)
-skills/     → ~660 domain modules (React, Terraform, XSS testing, Wrike automation, etc.)
-workflows/  → 16 slash commands (/deploy, /debug, /orchestrate, /test, etc.)
-rules/      → Global behavior rules
-scripts/    → Validation and verification scripts
+                          ┌─────────────────────────────────────┐
+                          │     ~/.gemini/config/ (Master)      │
+                          │ agents/ · rules/ · global_workflows │
+                          │ skills/ (active) · skills-catalog/  │
+                          │ plugins/ · mcp_config.json          │
+                          └──────────────────┬──────────────────┘
+                                             │ (Symlinks)
+                     ┌───────────────────────┴───────────────────────┐
+                     ▼                                               ▼
+       ┌───────────────────────────┐                   ┌───────────────────────────┐
+       │   ~/.gemini/antigravity   │                   │ ~/.gemini/antigravity-ide │
+       │     (AG 2.0 / Manager)    │                   │          (IDE)            │
+       └─────────────┬─────────────┘                   └─────────────┬─────────────┘
+                     │ (Symlinks)                                    │
+                     └─────────────────► conversations/ ◄────────────┘
+                                         brain/
+                                         code_tracker/
 ```
 
-### 🧩 Skill categories at a glance
+---
 
-| Category | Examples | Count |
-|----------|----------|-------|
-| Frontend & UI | React, Next.js, Vue, Tailwind, Radix UI | ~30 |
-| Backend & API | Node.js, FastAPI, NestJS, GraphQL, Go | ~25 |
-| Security & Pentesting | OWASP, XSS, SQLi, Burp Suite, Metasploit | ~30 |
-| SaaS Automation | Slack, Jira, Zendesk, Salesforce, Zoom, Wrike | ~30 |
-| Cloud & Infra | Docker, K8s, Terraform, AWS, GCP, Azure | ~25 |
-| AI & ML | RAG, LangChain, LangGraph, prompt engineering | ~20 |
-| Testing & Quality | Jest, Playwright, TDD, code review | ~20 |
-| Database | PostgreSQL, Prisma, NoSQL, migrations | ~15 |
-| Mobile | Flutter, React Native, SwiftUI, iOS | ~8 |
-| SEO & Growth | Technical SEO, content strategy, ASO | ~15 |
-| Content & Docs | Excel, PDF, PowerPoint, YouTube summaries | ~10 |
-| And more... | Game dev, shell scripting, 15+ languages | ~400+ |
+## ⚡ Key Highlights
 
-### 🛠️ Workflows
+### 1. 🛡️ Context Protection via Tiered Skill Catalog
+Standard Antigravity setups scan every folder in `skills/` on every user prompt, dumping thousands of tokens into the system prompt and triggering context exclusions. 
 
-Type a slash command and the agent handles the rest:
+**antigravity-god-mode solves this with a two-tier architecture:**
+- **Active Core Skills (`skills/`)**: Only 9 lean, universal meta-skills (`skill-picker`, `clean-code`, `concise-planning`, `debugger`, `architecture`, `api-design-principles`, `testing-patterns`, `error-handling-patterns`, `commit`) are active. System prompt overhead drops from >5,200 tokens to ~400 tokens.
+- **Skill Catalog (`skills-catalog/`)**: 120+ specialized domain skills (Next.js, Flutter, Neon Postgres, FastAPI, Rust async, Tailwind v4, SEO, iOS, etc.) reside in the catalog.
+- **Skill Picker Protocol**: The agent consults [`SKILL_INDEX.md`](skills-catalog/skill-picker/SKILL_INDEX.md) and reads specific `SKILL.md` files on-demand using `view_file`. Zero context waste.
 
-- ✨ `/create` — scaffold a new app with the right agents
-- 🧪 `/debug` — systematic root cause analysis
-- 🚢 `/deploy` — pre-flight checks → build → deploy → verify
-- 🧠 `/orchestrate` — coordinate 3+ specialist agents on complex tasks
-- ✅ `/test` — generate and run tests with coverage
-- 🗺️ `/plan` — break down a project before writing code
-- 💡 `/brainstorm` — explore 3+ options with tradeoffs before committing
+### 2. 🔄 Shared Dual-Environment Architecture
+- **Single Source of Truth**: All configurations live centrally in `~/.gemini/config/`.
+- **Shared History & State**: `conversations/`, `brain/`, and `code_tracker/` are shared between `antigravity` and `antigravity-ide`, so you never lose conversation history or project memory when switching tools.
+- **Relative Symlinks**: Portable, Git-friendly links that do not hardcode machine-specific paths.
 
-[Full list in ARCHITECTURE.md](ARCHITECTURE.md)
+### 3. 🎯 Unified Behavioral Rules (`GEMINI.md`)
+- **Senior Engineer & Mentor Personas**: Balances deep technical rigor with concise, structured delivery.
+- **Socratic Gate**: Proactively queries architectural trade-offs and edge cases on complex features before mutating code.
+- **Defensive Engineering**: Null-safety assertions, input boundary validation, resource cleanup, and triple-checking multi-file edits.
 
-## ⚡ Quick start
+---
 
-1. Copy this folder into your agent's config directory (e.g. `~/.gemini/`, `~/.claude/`, or your project's `.agent/`)
-2. That's it. Your agent now has god mode.
+## 📦 What's Inside
 
-## 🧭 How it works
+```
+~/.gemini/config/
+├── agents/             # 20 specialist personas (orchestrator, security-auditor, frontend-specialist, etc.)
+├── global_workflows/   # 23 slash commands (/create, /deploy, /debug, /orchestrate, /test, etc.)
+├── rules/              # Unified GEMINI.md behavioral directives
+├── skills/             # 9 active core meta-skills (relative symlinks into skills-catalog/)
+├── skills-catalog/     # 120+ domain skills organized by category + skill-picker index
+├── plugins/            # Modular plugins (gemini-api, firebase, flutter, modern-web-guidance, etc.)
+├── workflows/          # Workspace workflow generators
+├── ARCHITECTURE.md     # In-depth architectural specification
+├── README.md           # System guide & setup instructions
+└── .gitignore          # Strict filter preventing secrets or local machine state from committing
+```
 
-When your agent receives a task, it matches the request against skill descriptions and loads the relevant knowledge on demand. A React question pulls in `react-patterns` and `react-best-practices`. A security audit loads `vulnerability-scanner`, `xss-html-injection`, and `pentest-checklist`. The agent stays lean until it needs to be deep.
+### 🧩 Skill Catalog Categories
 
-Skills are composable — agents combine multiple skills for complex tasks. The `orchestrator` agent can coordinate `frontend-specialist`, `backend-specialist`, and `test-engineer` in parallel to build a full feature end-to-end.
+| Category | Skills Included |
+| :--- | :--- |
+| **Web & Frontend** | Next.js 14+ App Router, React best practices, Tailwind v4, Three.js, Zustand/Jotai, Web Performance |
+| **Mobile & Cross-Platform** | Flutter & Dart 3, Native iOS (Swift/SwiftUI), React Native architecture, Mobile UX |
+| **Backend & APIs** | FastAPI, Node.js microservices, NestJS, GraphQL architecture, REST API standards, Clerk Auth |
+| **Databases & Storage** | PostgreSQL, Neon serverless, Prisma, Supabase automation, SQL optimization |
+| **Systems, Shell & DevOps** | Rust async patterns, Linux/Bash automation, Monorepo management, Advanced Git workflows |
+| **Testing & Quality** | TDD workflows, Vitest/Jest, Playwright/E2E, Defensive error-handling, Debugger |
+| **SEO, Growth & Business** | Programmatic SEO, E-E-A-T authority building, Keyword strategy, A/B testing, Startup models |
 
-## � Rules & Behavior
+---
 
-The `rules/` directory contains global behavior configurations that govern how agents operate:
+## 🛠️ Quick Setup Guide
 
-- **GEMINI.md** — Core protocol for Google Gemini agents
-  - 3-tier rule hierarchy (Universal → Code → Design)
-  - Socratic Gate: mandatory clarification questions before implementation
-  - Agent routing and skill loading protocol
-  - Production-readiness checklists
-  - Verification script execution standards
+### Step 1: Clone into Centralized Config Store
 
-Rules define:
-- **When** agents ask questions vs. proceed directly
-- **How** skills are loaded on-demand
-- **Which** verification scripts run at each stage
-- **What** production standards must be met
+```bash
+git clone https://github.com/SamarthaKV29/antigravity-god-mode.git ~/.gemini/config
+```
 
-This ensures consistent behavior across all agents — whether you're debugging, deploying, or designing.
+### Step 2: Establish Symlinks for AG 2.0 & AG IDE
 
-## �👥 Who is this for
+Run the following commands to link both tools to your centralized config while preserving conversations:
 
-- Engineers who use AI coding agents daily and want fewer corrections
-- Teams standardizing how their AI agents approach architecture, testing, and security
-- Anyone tired of re-pasting the same documentation into every conversation
+```bash
+# Antigravity 2.0 (CLI / Agent Manager)
+mkdir -p ~/.gemini/antigravity
+for item in agents rules skills workflows global_workflows plugins; do
+  ln -sfn ~/.gemini/config/$item ~/.gemini/antigravity/$item
+done
 
-## 🙌 Credits
+# Antigravity IDE
+mkdir -p ~/.gemini/antigravity-ide
+for item in agents rules skills workflows global_workflows plugins; do
+  ln -sfn ~/.gemini/config/$item ~/.gemini/antigravity-ide/$item
+done
 
-This project is a curated assembly — not built from scratch. The workflows and configuration are original, but the skills and foundational kit come from these creators:
+# Share Conversations & Brain State between IDE and AG 2.0
+mkdir -p ~/.gemini/antigravity-ide/conversations ~/.gemini/antigravity-ide/brain ~/.gemini/antigravity-ide/code_tracker
+ln -sfn ~/.gemini/antigravity-ide/conversations ~/.gemini/antigravity/conversations
+ln -sfn ~/.gemini/antigravity-ide/brain ~/.gemini/antigravity/brain
+ln -sfn ~/.gemini/antigravity-ide/code_tracker ~/.gemini/antigravity/code_tracker
+```
 
-| What | Who | Repo |
-|------|-----|------|
-| **Antigravity Kit** (base agents, core skills, scripts) | [@vudovn](https://github.com/vudovn) | [antigravity-kit](https://github.com/vudovn/antigravity-kit) |
-| **~600 expanded skills** (SaaS automation, security, AI/ML, and more) | [@sickn33](https://github.com/sickn33) | [antigravity-awesome-skills](https://github.com/sickn33/antigravity-awesome-skills) |
-| **Superdesign skill** (UI/UX design workflow via CLI) | [@superdesigndev](https://github.com/superdesigndev) | [superdesign-skill](https://github.com/superdesigndev/superdesign-skill) |
+### Step 3: Run the Health Check Script
 
-My contribution is the curation: merging these sources into a single working setup, writing the workflows, and maintaining a config that works out of the box for most Antigravity users.
+Use the built-in sync and integrity script to validate your environment:
+
+```bash
+chmod +x ~/.gemini/sync_antigravity.sh
+~/.gemini/sync_antigravity.sh
+```
+
+---
+
+## 🧭 How to Use the Skill Picker
+
+When prompting your agent in Antigravity or Antigravity IDE:
+1. **Universal Tasks**: Clean code, architecture design, testing patterns, and error handling are active automatically.
+2. **Specialized Tasks**: When working with a specific stack (e.g. *"Build a serverless Neon Postgres backend with FastAPI"*), the agent references `skills-catalog/skill-picker/SKILL_INDEX.md` and loads:
+   - `skills-catalog/using-neon/SKILL.md`
+   - `skills-catalog/fastapi-pro/SKILL.md`
+3. **Session Pinning (Optional)**: If you are doing an extended project entirely in one framework, you can temporarily pin that skill into `skills/`:
+   ```bash
+   ln -s ../skills-catalog/flutter-expert ~/.gemini/config/skills/flutter-expert
+   ```
+   To remove when finished:
+   ```bash
+   rm ~/.gemini/config/skills/flutter-expert
+   ```
+
+---
+
+## 🔒 Security & Privacy
+
+This repository is designed to be public-safe:
+- Machine states (`installation_id`, `user_settings.pb`, `context_state/`) are ignored.
+- Project metadata (`projects/`, `sidecars/`) and personal conversation histories (`conversations/`, `brain/`) are excluded.
+- Credentials and tokens (`mcp_config.json`, `config.json`, `*.env`, `*.key`) are strictly blocked by [`.gitignore`](.gitignore).
+
+---
+
+## 🙌 Credits & Attributions
+
+- **Antigravity Kit** (base architecture, personas, and workflows) by [@vudovn](https://github.com/vudovn)
+- **Expanded Community Skills** by [@sickn33](https://github.com/sickn33)
+- **Superdesign Engine** by [@superdesigndev](https://github.com/superdesigndev)
+- **Curation, Tiered Skill Catalog & Dual-Sync Architecture** by [@SamarthaKV29](https://github.com/SamarthaKV29)
+
+---
 
 ## 📜 License
 
-See individual skill directories for licensing. Community-contributed skills retain their original licenses.
+See individual skill folders in `skills-catalog/` for respective open-source licenses.
