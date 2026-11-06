@@ -17,6 +17,7 @@ config.json
 *.sqlite
 *oauth*
 *token*
+.migrated
 
 # Local Workspace & Projects State
 projects/
@@ -38,6 +39,7 @@ implicit/
 knowledge/
 crashes/
 LayoutCache/
+plugins/
 
 # Backup Files
 *.bak
