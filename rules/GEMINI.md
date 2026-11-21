@@ -48,15 +48,33 @@ trigger: always_on
 
 ## 4. ENHANCED CODING PRINCIPLES
 - **Defensive Engineering**:
-  - **Null Safety**: Explicit assertions before property access.
-  - **Input Validation**: Sanitize and validate external inputs at system boundaries.
-  - **Resource Management**: Dispose listeners, clear timeouts, and close connections.
-  - **State Integrity**: Assert invariants before persisting state mutations.
-- **Architecture**:
-  - Clean abstractions, dependency injection for testability, and decoupled services.
-  - Standard directory layout: `src/`, `lib/` (utilities), `components/`, `services/`, `docs/`.
-- **Documentation**:
-  - Comprehensive JSDoc / docstrings for public APIs.
-  - Inline rationale explaining the "why" behind non-obvious logic.
-- **Production Standards**:
-  - Mandatory loading states, graceful degradation, and resilient error boundaries.
+  - **Null Safety**: Consistent null/undefined checks and explicit assertions before property access.
+  - **Input Validation**: Comprehensive boundary validation and sanitization for all external inputs.
+  - **Resource Management**: Robust disposal patterns and proactive memory management—dispose listeners, clear timeouts, and close connections.
+  - **State Integrity**: Multi-checkpoint state verification; assert invariants before persisting state mutations.
+- **Architecture & Async**:
+  - **Service-Oriented & Decoupled**: Clean abstractions hiding complexity behind simple interfaces, dependency injection for testability, and event-driven message passing for loose coupling.
+  - **Configurable & Cross-Platform**: Settings-driven behavior with intelligent, user-centric defaults (e.g., adjustable playback speed, retry attempts), universal cross-platform design principles, and consistent error handling.
+  - **Async Mastery**: Disciplined asynchronous programming (especially in JavaScript) with comprehensive state management and error handling.
+- **Code Organization & Style**:
+  - **Directory Layout**: Structured separation of concerns (`src/`, `lib/` (utilities), `components/`, `services/`, `assets/`, `docs/`, plus dedicated `background/`, `content/`, `popups/`, `editors/`, `todos/` where applicable).
+  - **Naming & Clarity**: Consistent, intent-revealing names (e.g., `validateJsonWithUserFeedback()` over `validate()`); self-explanatory "teaching code" structure with progressive complexity.
+  - **Documentation**: First-class JSDoc/docstrings for public APIs, inline "why" rationale for non-obvious logic, structured API specs, clear READMEs, and user docs.
+- **Performance & Caching**:
+  - **Resource & Multitasking**: Cooperative multitasking and proactive resource/storage optimization.
+  - **Multi-Tiered Caching**: Varying TTLs, DOM element caching, storage optimization, and proactive memory cleanup.
+- **UX, Quality & Inclusion**:
+  - **Resilient UI States**: Mandatory loading states/feedback, error recovery options, resilient error boundaries, graceful degradation, progressive enhancement, and visual overlays.
+  - **Inclusive Standards**: Maintainable, scalable, reliable, security-conscious code with accessibility (ARIA labels), i18n readiness, and mobile-responsive design.
+
+---
+
+## 5. DELIVERY, OPS & STACK BASELINES
+- **Quality Assurance**: Schema-driven development with structured data validation; reinforce testing with input validation, type safety, runtime assertions, and error boundaries.
+- **Build, Versioning & Release**:
+  - **Cross-Platform Builds**: Bash and PowerShell scripts with auto-detected versioning, environment awareness, color-coded output, and error recovery.
+  - **Versioning & Lifecycle**: Semantic versioning with schema and fallback strategies, complete product delivery via automated release packaging, deployment automation, error monitoring, and release management.
+- **Stack Baselines**:
+  - **Chrome Extensions**: Manifest V3 compliance, cross-context messaging, minimized permissions, and optimized content scripts.
+  - **Full-Stack Web**: Node.js/Express, React, database optimization, and RESTful APIs.
+  - **DevOps & Security**: Flexible environment management, PM2 monitoring, zero-downtime deployments, rate limiting, and CORS.
