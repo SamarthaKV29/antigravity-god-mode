@@ -21,12 +21,12 @@ trigger: always_on
 ---
 
 ## 2. SKILL PICKER & LAZY-LOADING PROTOCOL (Context Protection)
-- **Core Active Skills**: The global context contains only universal meta-skills (`skill-picker`, `clean-code`, `concise-planning`, `debugger`, `architecture`, `api-design-principles`, `testing-patterns`, `error-handling-patterns`, `commit`).
+- **Core Active Skills**: The global context contains only universal meta-skills (`skill-picker`, `subagent-routing`, `clean-code`, `concise-planning`, `debugger`, `architecture`, `api-design-principles`, `testing-patterns`, `error-handling-patterns`, `commit`).
 - **Skill Catalog Store**: All 120+ specialized domain skills reside in:
-  `/Users/sam/.gemini/config/skills-catalog/`
+  `~/.gemini/config/skills-catalog/`
 - **Dynamic Skill Resolution**:
   - When deep framework or specialized knowledge is needed (Flutter, Next.js, Postgres, Neon, FastAPI, Rust, Tailwind, iOS, SEO, Clerk, etc.), consult the index:
-    [SKILL_INDEX.md](file:///Users/sam/.gemini/config/skills-catalog/skill-picker/SKILL_INDEX.md)
+    [SKILL_INDEX.md](../skills-catalog/skill-picker/SKILL_INDEX.md)
   - Read only the target skill's `SKILL.md` on-demand using `view_file`.
   - **Never dump entire skill libraries into global context.**
 
@@ -78,3 +78,16 @@ trigger: always_on
   - **Chrome Extensions**: Manifest V3 compliance, cross-context messaging, minimized permissions, and optimized content scripts.
   - **Full-Stack Web**: Node.js/Express, React, database optimization, and RESTful APIs.
   - **DevOps & Security**: Flexible environment management, PM2 monitoring, zero-downtime deployments, rate limiting, and CORS.
+
+---
+
+## 6. SUBAGENT ROUTING & TOKEN-BUDGET PROTOCOL (`invoke_subagent`)
+- **Native Tooling**: `invoke_subagent`, `send_message`, and `manage_subagents` are **built-in Antigravity tools** (not external MCP calls).
+- **Auto-Delegation Gate**:
+  - **Keep Inline (0 subagents):** 1–2 file edits, single lookups, or Q&A (load `skills-catalog/` skills inline when needed).
+  - **Auto-Invoke `invoke_subagent`:** Specialized domain work (security/AppSec, DB migrations, Stripe/RAG/AI, marketing/paid media/sales, UX gates), parallel multi-angle audits, or pre-release QA gates across the **20 `antigravity-god-mode` + 49 `agency-agents`** subagents.
+- **Token-Optimal Execution**:
+  - **Model Tiering**: Pass `Model: "flash"` (or `"flash_lite"`) for discovery, copy/marketing drafts, and focused checks; `"inherit"` for implementation; `"pro"` for high-stakes architecture, security, and release gates.
+  - **Bounded Prompts**: Supply exact file paths, constraints, and expected output format so subagents skip repo-wide scanning.
+  - **Reuse & Concurrency**: Follow up via `send_message` instead of respawning; use `Workspace: "inherit"` for readers/sequential steps and `"share"` only for parallel writers.
+  - **Routing Reference**: Read the active `subagent-routing` skill (`../skills/subagent-routing/SKILL.md`) when coordinating multi-agent tasks.

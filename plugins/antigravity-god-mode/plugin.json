@@ -1,0 +1,12 @@
+{
+  "name": "antigravity-god-mode",
+  "displayName": "Antigravity God Mode Agents",
+  "description": "20 specialist software engineering, architecture, security, QA, and domain subagents for Antigravity.",
+  "version": "1.0.0",
+  "repository": "https://github.com/SamarthaKV29/antigravity-god-mode",
+  "suggestedPrompts": [
+    "Use backend-specialist to design a REST API with validation and tests",
+    "Use security-auditor to review auth and input validation",
+    "Use frontend-specialist to build a responsive React component"
+  ]
+}

@@ -39,7 +39,9 @@ implicit/
 knowledge/
 crashes/
 LayoutCache/
-plugins/
+plugins/*
+!plugins/antigravity-god-mode/
+!plugins/agency-agents/
 
 # Backup Files
 *.bak

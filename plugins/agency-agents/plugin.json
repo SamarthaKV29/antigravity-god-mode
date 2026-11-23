@@ -1,0 +1,12 @@
+{
+  "name": "agency-agents",
+  "displayName": "Agency Agents (Curated Pack)",
+  "description": "49 curated specialist subagents from msitarzewski/agency-agents covering Marketing, Paid Media, Sales/GTM, Design, Product/QA, AI Engineering, and AppSec.",
+  "version": "1.0.0",
+  "repository": "https://github.com/msitarzewski/agency-agents",
+  "suggestedPrompts": [
+    "Use marketing-growth-hacker to design a referral loop and onboarding activation experiment",
+    "Use testing-reality-checker to audit release readiness before launch",
+    "Use security-appsec-engineer to review API endpoints and auth flows"
+  ]
+}
